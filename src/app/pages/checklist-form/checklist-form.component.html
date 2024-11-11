@@ -1,0 +1,7 @@
+<p-toast position="center"></p-toast>
+@for (question of questions; track question) {
+  <app-question-input [question]="question.question" [risk]="question.risk" [id]="question.questionId"></app-question-input>
+}
+<p-button label="Cancelar" icon="pi pi-times" [text]="true" severity="danger" (onClick)="onReset()"/>
+  <p-button label="Salvar" icon="pi pi-check" (onClick)="onSubmit()"/>
+

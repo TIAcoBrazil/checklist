@@ -1,0 +1,12 @@
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+:host ::ng-deep p-card .p-card-title {
+  align-self: center;
+}
+
+

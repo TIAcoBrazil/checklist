@@ -1,0 +1,33 @@
+<p-card header="{{question()}}" [style]="invalid ? { border: '1px solid red'} : {}">
+  @if(risk() === getLowRisk()) {
+      <p-tag severity="secondary">{{risk() | risk}}</p-tag>
+    } @else if (risk() === getModerateRisk()) {
+      <p-tag severity="warning">{{risk() | risk}}</p-tag>
+    } @else if (risk() === getCriticalRisk()) {
+      <p-tag severity="danger">{{risk() | risk}}</p-tag>
+    }
+
+  <div class="checkbox-container">
+    <p-checkbox
+    [(ngModel)]="compliant"
+    label="Conforme"
+    [binary]="true"
+    [disabled]="notApplicable"
+    (ngModelChange)="onComplianceChange(true)"
+    />
+
+  <p-checkbox
+    [(ngModel)]="noCompliant"
+    label="Não Conforme"
+    [binary]="true"
+    [disabled]="notApplicable"
+    (ngModelChange)="onComplianceChange(false)" />
+
+  <p-checkbox
+    [(ngModel)]="notApplicable"
+    label="Não se aplica"
+    [binary]="true"
+    (ngModelChange)="onNotApplicableChange()" />
+  </div>
+</p-card>
+

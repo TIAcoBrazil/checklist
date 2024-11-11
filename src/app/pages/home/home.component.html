@@ -1,0 +1,19 @@
+<p-card header="Boas Vindas" subheader="Digite seu id de motorista">
+  <p-iconField iconPosition="left">
+    <p-inputIcon styleClass="pi pi-id-card"/>
+    <input type="text" pInputText placeholder="Código do motorista" [(ngModel)]="driverId" required="" name="driverId"/>
+  </p-iconField>
+
+  @if(invalid ) {
+    <div class="error-text">
+      <span class="error-text">Codigo do motorista obrigatório!</span>
+    </div>
+
+  }
+
+  <div class="buttons-container">
+    <p-button label="Limpar" severity="secondary" icon="pi pi-undo" iconPos="left" (click)="onReset()"/>
+    <p-button label="Entrar" type="submit" icon="pi pi-arrow-right" iconPos="right" (onClick)="onSubmit()"/>
+  </div>
+
+</p-card>

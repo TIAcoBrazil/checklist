@@ -1,0 +1,18 @@
+<p-card header="Checklist de Início" >
+  <form>
+    <div class="inputs-container">
+      <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-car" />
+        <input type="text" pInputText placeholder="ABC1234 ou ABC1D23" [(ngModel)]="carPlate" required name="carPlate"/>
+      </p-iconField>
+
+      @if(this.loading) {
+        <p-progressSpinner styleClass="w-12px h-12px" />
+      } @else {
+        <p-button type="submit" label="Iniciar checklist" icon="pi pi-arrow-right" iconPos="right" (click)="onSubmit()"/>
+      }
+    </div>
+  </form>
+</p-card>
+
+<p-toast position="center" [life]="5000"></p-toast>
