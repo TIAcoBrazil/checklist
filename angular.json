@@ -65,7 +65,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "proxyConfig": "proxy.conf.js"
+            "proxyConfig": "proxy.conf.js",
+            "host": "10.1.1.84",
+            "port": 4200,
+            "publicHost": "http://10.1.1.84:4200"
           },
           "configurations": {
             "production": {

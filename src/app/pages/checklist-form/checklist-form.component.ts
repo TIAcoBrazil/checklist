@@ -55,8 +55,13 @@ export class ChecklistFormComponent implements OnInit {
     )
   }
 
-  uploadPhoto(file: FileUploadEvent) {
-    this.checklistService.uploadPhoto(file.files[0]).subscribe({
+  uploadPhoto(event: FileUploadEvent, questionId) {
+
+    const file = event.files[0]
+
+    const name = `chk_${this.checklistId}_qst_${questionId}`
+
+    this.checklistService.uploadPhoto(new File([file], name, {type: file.type})).subscribe({
       next: r => console.log(r),
       error: e => console.log(e)
     })

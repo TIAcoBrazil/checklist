@@ -3,7 +3,7 @@
   <app-question-input [question]="question.question"
   [risk]="question.risk"
   [id]="question.questionId"
-  (uploadedPhoto)="uploadPhoto($event)"
+  (uploadedPhoto)="uploadPhoto($event, question.questionId)"
   [isMandatory]="question.isMandatory === 'S'"
   ></app-question-input>
 }
