@@ -5,6 +5,10 @@
       <p-tag severity="warning">{{risk() | risk}}</p-tag>
     } @else if (risk() === getCriticalRisk()) {
       <p-tag severity="danger">{{risk() | risk}}</p-tag>
+    } @else if (risk() === getBehavioralRisk()) {
+      <p-tag severity="info">{{risk() | risk}}</p-tag>
+    } @else if (risk() === getPhotographableRisk()) {
+      <p-tag severity="success">{{risk() | risk}}</p-tag>
     }
 
   <div class="checkbox-container">
@@ -29,5 +33,22 @@
     [binary]="true"
     (ngModelChange)="onNotApplicableChange()" />
   </div>
+
+  @if (this.isMandatory()) {
+    <div class="upload-container">
+      <p-fileUpload
+      mode="basic"
+      chooseLabel="Tirar foto"
+      chooseIcon="pi pi-camera"
+      name="demo[]"
+      url="https://www.primefaces.org/cdn/api/upload.php"
+      [auto]="true"
+      accept="image/*"
+      maxFileSize="1000000"
+      (onUpload)="onUpload($event)"
+      ></p-fileUpload>
+    </div>
+  }
+
 </p-card>
 

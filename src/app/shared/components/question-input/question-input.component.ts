@@ -1,15 +1,25 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AnswerEnum, RiskEnum } from '@shared/enums';
+import { IQuestion } from '@shared/models';
 import { RiskPipe } from '@shared/pipes';
+import { ChecklistService } from '@shared/services';
+import { MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FileUpload, FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
+
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-question-input',
   standalone: true,
-  imports: [CheckboxModule, FormsModule, CardModule, TagModule, RiskPipe],
+  imports: [CheckboxModule, FormsModule, CardModule, TagModule, RiskPipe, FileUploadModule],
+  providers: [MessageService],
   templateUrl: './question-input.component.html',
   styleUrl: './question-input.component.scss'
 })
@@ -20,11 +30,14 @@ export class QuestionInputComponent {
 
   id = input()
   question = input()
+  isMandatory = input()
   risk = input<RiskEnum>()
+  uploadedPhoto= output<FileUploadEvent>()
 
   invalid: boolean = false;
 
-  constructor() {
+  onUpload(event: FileUploadEvent) {
+    this.uploadedPhoto.emit(event)
   }
 
   onComplianceChange(isCompliant: boolean) {
@@ -73,6 +86,14 @@ export class QuestionInputComponent {
 
   getCriticalRisk() {
     return RiskEnum.C
+  }
+
+  getBehavioralRisk() {
+    return RiskEnum.B
+  }
+
+  getPhotographableRisk() {
+    return RiskEnum.P
   }
 
   isAsked() {

@@ -1,11 +1,13 @@
 import { Component, QueryList, ViewChildren, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionInputComponent } from '@shared/components';
+import { RiskEnum } from '@shared/enums';
 import { IQuestion } from '@shared/models';
 import { ChecklistService, QuestionService } from '@shared/services';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ButtonGroupModule } from 'primeng/buttongroup';
+import { FileUploadEvent } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -44,10 +46,20 @@ export class ChecklistFormComponent implements OnInit {
 
     this.questionService.getQuestions().subscribe(
       {
-        next: q => this.questions = q,
+        next: q => {
+          this.questions = q
+          this.sortByRisk()
+        },
         error: e => console.log(e)
       }
     )
+  }
+
+  uploadPhoto(file: FileUploadEvent) {
+    this.checklistService.uploadPhoto(file.files[0]).subscribe({
+      next: r => console.log(r),
+      error: e => console.log(e)
+    })
   }
 
   onReset() {
@@ -79,6 +91,18 @@ export class ChecklistFormComponent implements OnInit {
         error: e => console.log(e)
       }
     )
+  }
+
+  private sortByRisk() {
+    const riskPriority: { [key in RiskEnum]: number } = {
+      [RiskEnum.L]: 1, // Risco Leve
+      [RiskEnum.M]: 2, // Risco Moderado
+      [RiskEnum.C]: 3, // Risco Crítico
+      [RiskEnum.B]: 4, // Comportamental
+      [RiskEnum.P]: 5  // Fotografia
+    };
+
+    this.questions.sort((a,b) => riskPriority[a.risk] - riskPriority[b.risk])
   }
 
 }

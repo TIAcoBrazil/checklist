@@ -4,6 +4,6 @@ export interface IQuestion {
   questionId: number,
   question: string,
   risk: RiskEnum
-  isMandatory: Boolean
+  isMandatory: string
   carType: string
 }

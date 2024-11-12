@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RouteEnum } from '@shared/enums/route.enum';
 @Injectable({
@@ -38,5 +38,16 @@ export class ChecklistService {
 
   getLists(driverId: string) {
     return this.http.get(this.url + `/${driverId}`)
+  }
+
+  uploadPhoto(file: File) {
+    const formData: FormData = new FormData()
+    formData.append('file', file)
+
+    return this.http.post(this.url + '/upload', formData, {
+      headers: new HttpHeaders({
+        'enctype': 'multipart/form-data'
+      })
+    })
   }
 }

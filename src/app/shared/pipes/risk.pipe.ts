@@ -14,6 +14,10 @@ export class RiskPipe implements PipeTransform {
         return 'Risco Moderado';
       case 'C':
         return 'Risco Crítico';
+      case 'B':
+        return 'Comportamento no trânsito';
+      case 'P':
+        return 'Fotografia do veículo'
       default:
         return 'Risco Desconhecido';
     }
