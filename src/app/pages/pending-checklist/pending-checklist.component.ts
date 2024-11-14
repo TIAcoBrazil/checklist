@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, OnInit } from '@angular/core';
 import { ItemStatusComponent, StatusDialogComponent } from '@shared/components';
-import { AnswerEnum, RiskEnum } from '@shared/enums';
+import { AnswerEnum, MandatoryEnum, RiskEnum } from '@shared/enums';
 import { tabsMocks } from '@shared/mocks';
 import { IQuestion } from '@shared/models';
 import { IQuestionStatus } from '@shared/models/question-status.model';
@@ -46,8 +46,6 @@ export class PendingChecklistComponent implements OnInit{
   ngOnInit() {
     const data = history.state.data;
 
-    console.log(data)
-
     this.checklistId = data.checklistId
     this.carPlate = data.carPlate
 
@@ -61,7 +59,8 @@ export class PendingChecklistComponent implements OnInit{
                   {
                     questionId: q.questionId,
                     question: q.question,
-                    status: AnswerEnum.NO_COMPLIANT
+                    status: a.resolved,
+                    isMandatory: q.isMandatory
                   }
                 ),
                 error: e => console.log(e)
@@ -73,17 +72,20 @@ export class PendingChecklistComponent implements OnInit{
         error: e => console.log(e)
       }
     )
+    console.log(this.questions)
   }
 
-  getInfo(questionId) {
-    this.photosServices.getPhotoByName(this.checklistId, questionId).subscribe(
-      {
-        next: r => {this.image = r
-          this.openDialog()
-        },
-        error: e => console.log(e)
-      }
-    )
+  getInfo(question) {
+    if(question.isMandatory === MandatoryEnum.YES){
+      this.photosServices.getPhotoByName(this.checklistId, question.questionId).subscribe(
+        {
+          next: r => {this.image = r
+            this.openDialog()
+          },
+          error: e => console.log(e)
+        }
+      )
+    }
   }
 
   openDialog() {

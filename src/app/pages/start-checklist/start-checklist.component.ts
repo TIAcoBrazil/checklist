@@ -78,7 +78,7 @@ export class StartChecklistComponent implements OnInit{
 
     this.switchLoading()
 
-    this.checklistService.validateCargos(this.cargos, this.driverId, this.carPlate).subscribe(
+    this.checklistService.validateCargos(this.cargos, this.driverId, this.carPlate.toUpperCase()).subscribe(
       {next: (r:string[]) => {
         if (r.length > 0) {
           this.messageService.add(
@@ -90,7 +90,7 @@ export class StartChecklistComponent implements OnInit{
           )
           this.switchLoading()
         } else {
-          this.checklistService.createChecklist(this.carPlate, this.driverId).subscribe(
+          this.checklistService.createChecklist(this.carPlate.toUpperCase(), this.driverId).subscribe(
             {
               next: (checklist:any) => {
                 this.router.navigate(['/checklist', checklist.checklistId])},

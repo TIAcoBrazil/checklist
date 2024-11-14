@@ -1,5 +1,6 @@
 export interface IQuestionStatus {
   questionId: number;
   question: string;
-  status: string;
+  status: number;
+  isMandatory: string;
 }

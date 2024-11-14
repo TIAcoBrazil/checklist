@@ -61,15 +61,6 @@ export class ChecklistFormComponent implements OnInit {
 
     const file = event.files[0]
 
-    if(file.size > 2 * 1024 * 1024) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro!',
-        detail: 'A foto deve ser menor que 2 MB.'
-      });
-      return;
-    }
-
     const renamedFile = new File([file], `chk${this.checklistId}qst${questionId}`, { type: file.type})
 
     this.photos.push(renamedFile);
@@ -116,6 +107,8 @@ export class ChecklistFormComponent implements OnInit {
       q => {
         if(!q.isAsked() || !q.isPhotoUploaded()) {
           q.invalid = true;
+        } else {
+          q.invalid = false
         }
       }
     )

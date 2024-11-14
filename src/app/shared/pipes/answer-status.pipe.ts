@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Pipe({
   name: 'answerStatus',
@@ -6,8 +7,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AnswerStatusPipe implements PipeTransform {
 
-  transform(value: string,) {
-    return value === 'C';
+  transform(value: number) {
+    return value === 1;
   }
 
 }

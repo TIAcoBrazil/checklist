@@ -9,7 +9,7 @@
   <app-item-status
   [status]="question.status | answerStatus"
   [question]="question.question"
-  (click)="getInfo(question.questionId)"
+  (click)="getInfo(question)"
   ></app-item-status>
 
   @if (image) {
