@@ -5,6 +5,12 @@
   gap: 1rem;
 }
 
+.cargos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 :host ::ng-deep p-card .p-card-title {
   align-self: center;
 }

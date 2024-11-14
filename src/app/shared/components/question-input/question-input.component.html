@@ -44,8 +44,9 @@
       url="https://www.primefaces.org/cdn/api/upload.php"
       [auto]="true"
       accept="image/*"
-      maxFileSize="1000000"
+      maxFileSize="1000000000"
       (onUpload)="onUpload($event)"
+      [disabled]="this.photoUploaded"
       ></p-fileUpload>
     </div>
   }

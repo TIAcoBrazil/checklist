@@ -1,0 +1,23 @@
+<p-card header="Checklist Pendente">
+  <div class="info-container">
+    <span>Id: {{checklistId}}</span>
+    <span>Placa: {{carPlate}}</span>
+  </div>
+</p-card>
+
+@for(question of questions; track question) {
+  <app-item-status
+  [status]="question.status | answerStatus"
+  [question]="question.question"
+  (click)="getInfo(question.questionId)"
+  ></app-item-status>
+
+  @if (image) {
+    <p-dialog header="Em andamento" [modal]="true" [(visible)]="showDialog" [style]="{ width: '25rem' }">
+      <app-status-dialog [imageFile]="image"></app-status-dialog>
+    </p-dialog>
+  }
+
+}
+
+

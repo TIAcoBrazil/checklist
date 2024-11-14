@@ -1,3 +1,4 @@
+import { JsonPipe } from '@angular/common';
 import { Component, QueryList, ViewChildren, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionInputComponent } from '@shared/components';
@@ -9,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+import { sortByRisk} from '@shared/utils'
 
 @Component({
   selector: 'app-checklist-form',
@@ -27,6 +29,7 @@ export class ChecklistFormComponent implements OnInit {
 
   questions: IQuestion[] = [];
   checklistId: string;
+  photos: File[] = []
 
   @ViewChildren(QuestionInputComponent) questionInputs: QueryList<QuestionInputComponent>
 
@@ -47,23 +50,46 @@ export class ChecklistFormComponent implements OnInit {
     this.questionService.getQuestions().subscribe(
       {
         next: q => {
-          this.questions = q
-          this.sortByRisk()
+          this.questions = sortByRisk(q)
         },
         error: e => console.log(e)
       }
     )
   }
 
-  uploadPhoto(event: FileUploadEvent, questionId) {
+  savePhotoInMemory(event: FileUploadEvent, questionId) {
 
     const file = event.files[0]
 
-    const name = `chk_${this.checklistId}_qst_${questionId}`
+    if(file.size > 2 * 1024 * 1024) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro!',
+        detail: 'A foto deve ser menor que 2 MB.'
+      });
+      return;
+    }
 
-    this.checklistService.uploadPhoto(new File([file], name, {type: file.type})).subscribe({
-      next: r => console.log(r),
-      error: e => console.log(e)
+    const renamedFile = new File([file], `chk${this.checklistId}qst${questionId}`, { type: file.type})
+
+    this.photos.push(renamedFile);
+    console.log(renamedFile, this.photos)
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sucesso!',
+      detail: 'Foto carregada com sucesso!'
+    })
+  }
+
+  uploadPhoto() {
+    this.photos.forEach(p => {
+      this.checklistService.uploadPhoto(p).subscribe({
+        next: () => this.messageService.add({
+          severity: 'success',
+          summary: "Sucesso",
+          detail:"Formulário carregado com sucesso!"
+        })
+      })
     })
   }
 
@@ -72,42 +98,38 @@ export class ChecklistFormComponent implements OnInit {
   }
 
   onSubmit() {
+    if(this.checkIsValid()) {
+      let answers = this.questionInputs.map(q => q.getAnswer())
+      this.checklistService.submitAnswers(answers, this.checklistId).subscribe(
+        {next: (r:any) => {
+          this.uploadPhoto()
+          this.router.navigate(['/' + r.driverId])
+        },
+          error: e => console.log(e)
+        }
+      )
+    }
+  }
+
+  private checkIsValid(): boolean {
     this.questionInputs.forEach(
       q => {
-        if(!q.isAsked()) {
+        if(!q.isAsked() || !q.isPhotoUploaded()) {
           q.invalid = true;
         }
       }
     )
 
-    if (this.questionInputs.some(q => !q.isAsked())) {
+    if (this.questionInputs.some(q => q.invalid)) {
       this.messageService.add(
       {
         severity: 'error',
         summary: 'Checklists não respondidas!',
         detail: 'Preencha todas as checklists.'
       })
-      return;
+      return false;
     }
-
-    let answers = this.questionInputs.map(q => q.getAnswer())
-    this.checklistService.submitAnswers(answers, this.checklistId).subscribe(
-      {next: (r:any) => this.router.navigate(['/' + r.driverId]),
-        error: e => console.log(e)
-      }
-    )
-  }
-
-  private sortByRisk() {
-    const riskPriority: { [key in RiskEnum]: number } = {
-      [RiskEnum.L]: 1, // Risco Leve
-      [RiskEnum.M]: 2, // Risco Moderado
-      [RiskEnum.C]: 3, // Risco Crítico
-      [RiskEnum.B]: 4, // Comportamental
-      [RiskEnum.P]: 5  // Fotografia
-    };
-
-    this.questions.sort((a,b) => riskPriority[a.risk] - riskPriority[b.risk])
+    return true;
   }
 
 }

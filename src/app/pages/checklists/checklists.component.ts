@@ -17,7 +17,10 @@ export class ChecklistsComponent implements OnInit{
   checklists = null
   driverId = '';
 
-  constructor(private checklistService: ChecklistService, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private checklistService: ChecklistService,
+    private route: ActivatedRoute,
+    private router: Router) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -42,5 +45,13 @@ export class ChecklistsComponent implements OnInit{
 
   finishChecklist(checklistId) {
     this.router.navigate(['/finish/' + checklistId])
+  }
+
+  viewPendingChecklist(checklistId, carPlate) {
+    const data = {
+      checklistId: checklistId,
+      carPlate: carPlate
+    }
+    this.router.navigate(['/pending'], {state: {data}})
   }
 }

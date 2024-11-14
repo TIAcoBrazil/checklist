@@ -15,4 +15,8 @@ export class QuestionService {
   getQuestions(): Observable<IQuestion[]> {
     return this.http.get<IQuestion[]>(this.url)
   }
+
+  getQuestion(questionId) {
+    return this.http.get(this.url + `/${questionId}`)
+  }
 }

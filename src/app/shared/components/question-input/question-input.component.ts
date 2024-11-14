@@ -35,8 +35,10 @@ export class QuestionInputComponent {
   uploadedPhoto= output<FileUploadEvent>()
 
   invalid: boolean = false;
+  photoUploaded: boolean = false;
 
   onUpload(event: FileUploadEvent) {
+    this.photoUploaded = true;
     this.uploadedPhoto.emit(event)
   }
 
@@ -94,6 +96,13 @@ export class QuestionInputComponent {
 
   getPhotographableRisk() {
     return RiskEnum.P
+  }
+
+  isPhotoUploaded() {
+    if(this.isMandatory()) {
+      return this.photoUploaded
+    }
+    return true
   }
 
   isAsked() {

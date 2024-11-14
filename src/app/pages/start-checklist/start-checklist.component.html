@@ -3,13 +3,44 @@
     <div class="inputs-container">
       <p-iconField iconPosition="left">
         <p-inputIcon styleClass="pi pi-car" />
-        <input type="text" pInputText placeholder="ABC1234 ou ABC1D23" [(ngModel)]="carPlate" required name="carPlate"/>
+        <input
+        type="text"
+        pInputText
+        placeholder="ABC1234 ou ABC1D23"
+        [(ngModel)]="carPlate"
+        required
+        name="carPlate"/>
       </p-iconField>
+
+      <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-truck" />
+        <input
+        type="text"
+        pInputText
+        placeholder="Código do Carregamento"
+        [(ngModel)]="cargo"
+        name="cargo"
+        (keyup)="handleType($event)"/>
+      </p-iconField>
+
+      <div class="cargos-container">
+        @for (cargo of cargos; track $index) {
+          <p-chip
+          [removable]="true"
+          (onRemove)="deleteCargo($index)"
+          >{{cargo}}</p-chip>
+        }
+
+      </div>
 
       @if(this.loading) {
         <p-progressSpinner styleClass="w-12px h-12px" />
       } @else {
-        <p-button type="submit" label="Iniciar checklist" icon="pi pi-arrow-right" iconPos="right" (click)="onSubmit()"/>
+        <p-button
+        label="Iniciar checklist"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        (click)="onSubmit()"/>
       }
     </div>
   </form>

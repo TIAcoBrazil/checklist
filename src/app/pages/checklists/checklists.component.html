@@ -14,7 +14,7 @@
       <td>{{ checklist.status === 'P' ? 'Pendente' : checklist.status === 'N' ? 'Aberto' : checklist.status }}</td>
       <td>
         @if (checklist.status === 'P') {
-          <p-button size="small">Visualizar</p-button>
+          <p-button size="small" (click)="viewPendingChecklist(checklist.checklistId, checklist.carPlate)">Visualizar</p-button>
         } @else if (checklist.status === 'N'){
           <p-button size="small" (click)="finishChecklist(checklist.checklistId)">Finalizar</p-button>
         }

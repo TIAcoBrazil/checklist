@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 
@@ -12,4 +12,9 @@ import { PanelModule } from 'primeng/panel';
 })
 export class HeaderComponent {
 
+  constructor(private router: Router) {}
+
+  navigateHome() {
+    this.router.navigate(['/']);
+  }
 }

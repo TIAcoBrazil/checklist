@@ -50,4 +50,18 @@ export class ChecklistService {
       })
     })
   }
+
+  validateCargos(cargos, driverId, carPlate) {
+    const data = {
+      cargos: cargos,
+      driverId: driverId,
+      carPlate: carPlate
+    }
+    return this.http.post(this.url + '/validate', data)
+  }
+
+  getNoCompliantAnswers(checklistId) {
+    return this.http.get(this.url + '/answers/' + checklistId)
+  }
+
 }

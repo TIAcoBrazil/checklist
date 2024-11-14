@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.image-display {
+  width: 100%;
+  max-width: 100vw;
+  height: auto;
+  border: 1px solid silver;
+  border-radius: 16px;
+}

@@ -1,7 +1,7 @@
 const PROXY_CONFIG = [
   {
     context: ['/api'],
-    target: 'http://10.1.1.84:4200',
+    target: 'http://localhost:8080',
     changeOrigin: true,
     logLevel: 'debug',
     secure: false,
